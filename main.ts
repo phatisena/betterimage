@@ -51,9 +51,7 @@ namespace images {
                     if (coli >= 0) {
                         oimg.setPixel(imx, imy, lbcol[coli])
                     } else {
-                        if (ucol > 0 && oimg.getPixel(imx, imy) > 0) {
-                            oimg.setPixel(imx, imy, ucol)
-                        }
+                        oimg.setPixel(imx, imy, ucol)
                     }
                 }
             }
