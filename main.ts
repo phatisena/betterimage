@@ -31,7 +31,7 @@ namespace images {
      * from color input list
      */
     //%blockid=img_recol
-    //%block="$img re stamp from $lacol to $lbcol"
+    //%block="$img=screen_image_picker re stamp from $lacol to $lbcol"
     //%lacol.shadow=colorindexpicker
     //%lbcol.shadow=colorindexpicker
     //%group="better image"
