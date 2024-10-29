@@ -27,7 +27,8 @@ namespace images {
 
     /**
      * advance image color replace
-     * with return image in another colors
+     * and get return image in another colors
+     * from color input list
      */
     //%blockid=img_recol
     //%block="$img re stamp from $lacol to $lbcol"
