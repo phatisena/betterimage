@@ -4,6 +4,7 @@ namespace images {
     //%block="$img=screen_image_picker width"
     //%img.shadow=variable_get
     //%group="better image"
+    //%inlineInputMode=inline
     export function ImgWidth(img: Image) {
         return img.width
     }
@@ -12,16 +13,18 @@ namespace images {
     //%block="$img=screen_image_picker height"
     //%img.shadow=variable_get
     //%group="better image"
+    //%inlineInputMode=inline
     export function ImgHeight(img: Image) {
         return img.height
     }
 
     //%blockid=img_recol
-    //%block="$img re image from $lacol to $lbcol"
+    //%block="$img re stamp from $lacol to $lbcol"
     //%lacol.shadow=colorindexpicker
     //%lbcol.shadow=colorindexpicker
     //%group="better image"
-    export function ReAndFill(img: Image, lacol: number[], lbcol: number[]) {
+    //%inlineInputMode=inline
+    export function StampImg(img: Image, lacol: number[], lbcol: number[]) {
         let colnv = 0
         let coli = 0
         let ucol = 0
