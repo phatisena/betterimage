@@ -1,5 +1,8 @@
 namespace images {
-
+    /**
+     * calculated width
+     * from image width
+     */
     //%blockid=img_imgwidth
     //%block="$img=screen_image_picker width"
     //%img.shadow=variable_get
@@ -9,6 +12,10 @@ namespace images {
         return img.width
     }
 
+    /**
+     * calculated height
+     * from image height
+     */
     //%blockid=img_imgheight
     //%block="$img=screen_image_picker height"
     //%img.shadow=variable_get
@@ -18,6 +25,10 @@ namespace images {
         return img.height
     }
 
+    /**
+     * advance image color replace
+     * with return image in another colors
+     */
     //%blockid=img_recol
     //%block="$img re stamp from $lacol to $lbcol"
     //%lacol.shadow=colorindexpicker
