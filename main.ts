@@ -33,7 +33,7 @@ namespace images {
     //%blockid=img_recol
     //%block="$img=screen_image_picker re stamp from $lacol to $lbcol"
     //%lacol.shadow="lists_create_with" lacol.defl="colorindexpicker"
-    //%lacol.shadow="lists_create_with" lbcol.defl="colorindexpicker"
+    //%lbcol.shadow="lists_create_with" lbcol.defl="colorindexpicker"
     //%group="better image"
     //%inlineInputMode=inline
     //%weight=30
