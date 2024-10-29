@@ -1,7 +1,8 @@
-namespace Images {
+namespace images {
 
     //%blockid=img_imgwidth
     //%block="$img=screen_image_picker width"
+    //%img.shadow=variable_get
     //%group="better image"
     export function ImgWidth(img: Image) {
         return img.width
@@ -9,6 +10,7 @@ namespace Images {
 
     //%blockid=img_imgheight
     //%block="$img=screen_image_picker height"
+    //%img.shadow=variable_get
     //%group="better image"
     export function ImgHeight(img: Image) {
         return img.height
