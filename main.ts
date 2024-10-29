@@ -1,4 +1,4 @@
-namespace Image {
+namespace Images {
 
     //%blockid=img_imgwidth
     //%block="$img=screen_image_picker width"
