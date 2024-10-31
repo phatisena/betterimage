@@ -47,7 +47,7 @@ namespace images {
                 ucol = img.getPixel(imx, imy)
                 coli = lacol.indexOf(ucol)
                 if ( coli >= 0) { colnv = lacol[coli] } else { colnv = ucol}
-                if (ucol > 0) {
+                if (ucol >= 0) {
                     if (coli >= 0) {
                         oimg.setPixel(imx, imy, lbcol[coli])
                     } else {
