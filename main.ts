@@ -1,28 +1,27 @@
+enum imgsizes {
+    width,
+    height
+}
 namespace images {
     /**
-     * calculated width
-     * from image width
+     * calculated size
+     * from image
      */
-    //%blockid=img_imgwidth
-    //%block="$img=screen_image_picker width"
+    //%blockid=img_imgsizes
+    //%block="$img=screen_image_picker $imgsize"
     //%group="better image"
     //%inlineInputMode=inline
     //%weight=20
-    export function ImgWidth(img: Image) {
-        return img.width
-    }
+    export function ImgSize(img: Image, imgsize: imgsizes) {
+        switch (imgsize) {
+            case imgsizes.width:
+                return img.width;
+            case imgsizes.height:
+                return img.height;
+            default:
+                return 0;
 
-    /**
-     * calculated height
-     * from image height
-     */
-    //%blockid=img_imgheight
-    //%block="$img=screen_image_picker height"
-    //%group="better image"
-    //%inlineInputMode=inline
-    //%weight=10
-    export function ImgHeight(img: Image) {
-        return img.height
+        }
     }
 
     /**
