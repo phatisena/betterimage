@@ -71,39 +71,39 @@ namespace images {
     //%group="better image"
     //%inlineInputMode=inline
     //%weight=40
-    function ImgOverlapImg(ImgI: Image, ImgO: Image, Ix: number, Iy: number, Dx: number, Dy: number) {
-        if (Dy == 0) {
+    export function ImgOverlapImg(ImgI: Image, ImgO: Image, Ix: number, Iy: number, Dx: number, Dy: number) {
+        if (Dy == 0 && Dx != 0) {
             if (Dx > 0) {
                 for (let Nx = 0; Nx < ImgI.width; Nx++) {
                     for (let Ny = 0; Ny < ImgI.height; Ny++) {
-                        if (ImgI.getPixel(Nx, Ny) != 0 && ImgI.getPixel(Ix + Nx, Iy + Ny) != 0) {
-                            return false
+                        if (ImgI.getPixel(Nx, Ny) > 0 && ImgI.getPixel(Ix + Nx, Iy + Ny) > 0) {
+                            return true
                         }
                     }
                 }
             } else if (Dx < 0) {
                 for (let Nx = ImgI.width; Nx >= 0; Nx--) {
                     for (let Ny = 0; Ny < ImgI.height; Ny++) {
-                        if (ImgI.getPixel(Nx, Ny) != 0 && ImgI.getPixel(Ix + Nx, Iy + Ny) != 0) {
-                            return false
+                        if (ImgI.getPixel(Nx, Ny) > 0 && ImgI.getPixel(Ix + Nx, Iy + Ny) > 0) {
+                            return true
                         }
                     }
                 }
             }
-        } else if (Dx == 0) {
+        } else if (Dx == 0 && Dy != 0) {
             if (Dy > 0) {
                 for (let Ny = 0; Ny < ImgI.height; Ny++) {
                     for (let Nx = 0; Nx < ImgI.width; Nx++) {
-                        if (ImgI.getPixel(Nx, Ny) != 0 && ImgI.getPixel(Ix + Nx, Iy + Ny) != 0) {
-                            return false
+                        if (ImgI.getPixel(Nx, Ny) > 0 && ImgI.getPixel(Ix + Nx, Iy + Ny) > 0) {
+                            return true
                         }
                     }
                 }
             } else if (Dy < 0) {
                 for (let Ny = ImgI.height; Ny >= 0; Ny--) {
                     for (let Nx = 0; Nx < ImgI.width; Nx++) {
-                        if (ImgI.getPixel(Nx, Ny) != 0 && ImgI.getPixel(Ix + Nx, Iy + Ny) != 0) {
-                            return false
+                        if (ImgI.getPixel(Nx, Ny) > 0 && ImgI.getPixel(Ix + Nx, Iy + Ny) > 0) {
+                            return true
                         }
                     }
                 }
