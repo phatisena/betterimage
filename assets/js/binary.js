@@ -1,4 +1,4 @@
-// meta={"simUrl":"https://trg-arcade.userpxt.io/v1.12.57/---simulator","cdnUrl":"https://pxt.azureedge.net","version":"3.0.0","target":"arcade","targetVersion":"1.12.57","repo":"phatisena/betterimage"}
+// meta={"simUrl":"https://trg-arcade.userpxt.io/v1.12.57/---simulator","cdnUrl":"https://pxt.azureedge.net","version":"4.0.0","target":"arcade","targetVersion":"1.12.57","repo":"phatisena/betterimage"}
 // total=1248155 new=5.85% cached=88.48% other=5.67%
 (function (ectx) {
 'use strict';
@@ -429,7 +429,7 @@ const pxsim_pxtrt = pxsim.pxtrt;
 const pxsim_numops = pxsim.numops;
 
 
-function _main___P54631(s) {
+function _main___P61220(s) {
 let r0 = s.r0, step = s.pc;
 s.pc = -1;
 
@@ -831,13 +831,13 @@ switch (step) {
     return leave(s, r0)
   default: oops()
 } } }
-_main___P54631.info = {"start":0,"length":0,"line":0,"column":0,"endLine":0,"endColumn":0,"fileName":"main.ts","functionName":"<main>","argumentNames":[]}
-_main___P54631.continuations = [  ]
+_main___P61220.info = {"start":0,"length":0,"line":0,"column":0,"endLine":0,"endColumn":0,"fileName":"main.ts","functionName":"<main>","argumentNames":[]}
+_main___P61220.continuations = [  ]
 
-function _main___P54631_mk(s) {
+function _main___P61220_mk(s) {
     checkStack(s.depth);
     return {
-        parent: s, fn: _main___P54631, depth: s.depth + 1,
+        parent: s, fn: _main___P61220, depth: s.depth + 1,
         pc: 0, retval: undefined, r0: undefined, overwrittenPC: false, lambdaArgs: null,
   tmp_0: undefined,
   tmp_1: undefined,
@@ -42328,5 +42328,5 @@ const sprites_BaseSpriteSayRenderer__C38702_VT = mkVTable({
 
 const breakpoints = setupDebugger(1, [])
 
-return _main___P54631
+return _main___P61220
 })
