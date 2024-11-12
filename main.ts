@@ -1,8 +1,8 @@
-enum imgsizes {
-    width,
-    height
-}
+
 namespace images {
+
+    export enum imgsizes { width, height}
+
     /**
      * calculated size
      * from image
@@ -36,7 +36,7 @@ namespace images {
     //%group="better image"
     //%inlineInputMode=inline
     //%weight=30
-    export function StampImg(img: Image, lacol: number[], lbcol: number[]) {
+    export function ReColor(img: Image, lacol: number[], lbcol: number[]) {
         let colnv = 0
         let coli = 0
         let ucol = 0
@@ -62,7 +62,7 @@ namespace images {
      * advance image overalap
      * the another image
      * with scanning image
-     * to check overlap
+     * to checking overlap the image
      */
     //%blockid=img_imgoverlap
     //%block="Image $ImgI=screen_image_picker overlaping OtherImage $ImgO=screen_image_picker At OffsetX $Ix OffsetY $Iy And DirX $Dx DirY $Dy"
@@ -72,11 +72,12 @@ namespace images {
     //%inlineInputMode=inline
     //%weight=40
     export function ImgOverlapImg(ImgI: Image, ImgO: Image, Ix: number, Iy: number, Dx: number, Dy: number) {
-        if (Dy == 0 && Dx != 0) {
+        if (ImgI.width > ImgO.height || ImgI.width > ImgO.height) { return false }
+        if (Dy == 0 && Math.abs(Dx) > 0) {
             if (Dx > 0) {
                 for (let Nx = 0; Nx < ImgI.width; Nx++) {
                     for (let Ny = 0; Ny < ImgI.height; Ny++) {
-                        if (ImgI.getPixel(Nx, Ny) > 0 && ImgI.getPixel(Ix + Nx, Iy + Ny) > 0) {
+                        if (ImgI.getPixel(Nx, Ny) > 0 && ImgO.getPixel(Ix + Nx, Iy + Ny) > 0) {
                             return true
                         }
                     }
@@ -84,17 +85,17 @@ namespace images {
             } else if (Dx < 0) {
                 for (let Nx = ImgI.width; Nx >= 0; Nx--) {
                     for (let Ny = 0; Ny < ImgI.height; Ny++) {
-                        if (ImgI.getPixel(Nx, Ny) > 0 && ImgI.getPixel(Ix + Nx, Iy + Ny) > 0) {
+                        if (ImgI.getPixel(Nx, Ny) > 0 && ImgO.getPixel(Ix + Nx, Iy + Ny) > 0) {
                             return true
                         }
                     }
                 }
             }
-        } else if (Dx == 0 && Dy != 0) {
+        } else if (Dx == 0 && Math.abs(Dy) > 0) {
             if (Dy > 0) {
                 for (let Ny = 0; Ny < ImgI.height; Ny++) {
                     for (let Nx = 0; Nx < ImgI.width; Nx++) {
-                        if (ImgI.getPixel(Nx, Ny) > 0 && ImgI.getPixel(Ix + Nx, Iy + Ny) > 0) {
+                        if (ImgI.getPixel(Nx, Ny) > 0 && ImgO.getPixel(Ix + Nx, Iy + Ny) > 0) {
                             return true
                         }
                     }
@@ -102,7 +103,7 @@ namespace images {
             } else if (Dy < 0) {
                 for (let Ny = ImgI.height; Ny >= 0; Ny--) {
                     for (let Nx = 0; Nx < ImgI.width; Nx++) {
-                        if (ImgI.getPixel(Nx, Ny) > 0 && ImgI.getPixel(Ix + Nx, Iy + Ny) > 0) {
+                        if (ImgI.getPixel(Nx, Ny) > 0 && ImgO.getPixel(Ix + Nx, Iy + Ny) > 0) {
                             return true
                         }
                     }
