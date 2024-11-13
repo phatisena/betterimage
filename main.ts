@@ -121,7 +121,7 @@ namespace images {
      * from color input list
      */
     //%blockid=img_recolshade
-    //%block="$img=screen_image_picker matrix shader from $lacol to $lbcol"
+    //%block="$img=screen_image_picker matrix shader $mtl from $lacol to $lbcol"
     //%lacol.shadow="lists_create_with" lacol.defl="colorindexpicker"
     //%lbcol.shadow="lists_create_with" lbcol.defl="colorindexpicker"
     //%mtl.min=0 mtl.max=8 mtl.defl=0
@@ -146,13 +146,13 @@ namespace images {
                 if (coli >= 0) { colnv = lacol[coli] } else { colnv = ucol }
                 if (ucol >= 0) {
                     if (coli >= 0) {
-                        if (mt4[mtl].getPixel(rix, riy) > 0){
+                        if (mt4[mti].getPixel(rix, riy) > 0){
                             oimg.setPixel(imx, imy, lbcol[coli])
                         } else {
                             oimg.setPixel(imx, imy, lacol[coli])
                         }
                     } else {
-                        if (mt4[mtl].getPixel(rix, riy) > 0) {
+                        if (mt4[mti].getPixel(rix, riy) > 0) {
                             oimg.setPixel(imx, imy, ucol)
                         }
                     }
@@ -167,8 +167,8 @@ namespace images {
      * fill matrix shader
      * to image
      */
-    //%blockid=img_recolshade
-    //%block="$img=screen_image_picker fill matrix shader from $icol to $ocol"
+    //%blockid=img_reshade
+    //%block="$img=screen_image_picker fill matrix shader $mtl from $icol to $ocol"
     //%icol.shadow="colorindexpicker"
     //%ocol.shadow="colorindexpicker"
     //%mtl.min=0 mtl.max=8 mtl.defl=0
@@ -191,14 +191,14 @@ namespace images {
                 ucol = img.getPixel(imx, imy)
                 if (icol > 0) {
                     if (icol == ucol) {
-                        if (mt4[mtl].getPixel(rix, riy) > 0) {
+                        if (mt4[mti].getPixel(rix, riy) > 0) {
                             oimg.setPixel(imx, imy, ocol)
                         } else {
                             oimg.setPixel(imx, imy, ucol)
                         }
                     }
                 } else {
-                    if (mt4[mtl].getPixel(rix, riy) > 0) {
+                    if (mt4[mti].getPixel(rix, riy) > 0) {
                         oimg.setPixel(imx, imy, ocol)
                     } else {
                         oimg.setPixel(imx, imy, ucol)
