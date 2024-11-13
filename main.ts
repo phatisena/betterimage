@@ -3,6 +3,61 @@ namespace images {
 
     export enum imgsizes { width, height}
 
+    let mt4: Image[] = [img`
+        . . . .
+        . . . .
+        . . . .
+        . . . .
+    `,
+    img`
+        . . f .
+        . . . .
+        f . . .
+        . . . .
+    `,
+        img`
+            f . f .
+            . . . .
+            f . f .
+            . . . .
+        `,
+        img`
+            f . f .
+            . . . f
+            f . f .
+            . f . .
+        `,
+        img`
+            f . f .
+            . f . f
+            f . f .
+            . f . f
+        `,
+        img`
+            f . f .
+            . f f f
+            f . f .
+            f f . f
+        `,
+        img`
+            f . f .
+            f f f f
+            f . f .
+            f f f f
+        `,
+        img`
+            f . f f
+            f f f f
+            f f f .
+            f f f f
+        `,
+        img`
+            f f f f
+            f f f f
+            f f f f
+            f f f f
+        `]
+
     /**
      * calculated size
      * from image
@@ -49,6 +104,102 @@ namespace images {
                 if (ucol >= 0) {
                     if (coli >= 0) {
                         oimg.setPixel(imx, imy, lbcol[coli])
+                    } else {
+                        oimg.setPixel(imx, imy, ucol)
+                    }
+                }
+            }
+        }
+        return oimg
+    }
+
+    /**
+     * advance image color replace
+     * and get return image
+     * in another colors
+     * as matrix shader
+     * from color input list
+     */
+    //%blockid=img_recolshade
+    //%block="$img=screen_image_picker matrix shader from $lacol to $lbcol"
+    //%lacol.shadow="lists_create_with" lacol.defl="colorindexpicker"
+    //%lbcol.shadow="lists_create_with" lbcol.defl="colorindexpicker"
+    //%mtl.min=0 mtl.max=8 mtl.defl=0
+    //%group="better image"
+    //%inlineInputMode=inline
+    //%weight=30
+    export function ReColShade(img: Image, mtl: number = 0, lacol: number[], lbcol: number[]) {
+        let colnv = 0
+        let coli = 0
+        let ucol = 0
+        let oimg = image.create(img.width, img.height)
+        let rix = 0
+        let riy = 0
+        let mt4l = mt4.length
+        let mti = mtl % mt4l
+        for (let imx = 0; imx < img.width; imx++) {
+            for (let imy = 0; imy < img.height; imy++) {
+                rix = imx % mt4[mti].width
+                riy = imy % mt4[mti].height
+                ucol = img.getPixel(imx, imy)
+                coli = lacol.indexOf(ucol)
+                if (coli >= 0) { colnv = lacol[coli] } else { colnv = ucol }
+                if (ucol >= 0) {
+                    if (coli >= 0) {
+                        if (mt4[mtl].getPixel(rix, riy) > 0){
+                            oimg.setPixel(imx, imy, lbcol[coli])
+                        } else {
+                            oimg.setPixel(imx, imy, lacol[coli])
+                        }
+                    } else {
+                        if (mt4[mtl].getPixel(rix, riy) > 0) {
+                            oimg.setPixel(imx, imy, ucol)
+                        }
+                    }
+                }
+            }
+        }
+        return oimg
+    }
+
+    /**
+     * advance image color
+     * fill matrix shader
+     * to image
+     */
+    //%blockid=img_recolshade
+    //%block="$img=screen_image_picker fill matrix shader from $icol to $ocol"
+    //%icol.shadow="colorindexpicker"
+    //%ocol.shadow="colorindexpicker"
+    //%mtl.min=0 mtl.max=8 mtl.defl=0
+    //%group="better image"
+    //%inlineInputMode=inline
+    //%weight=30
+    export function ReShade(img: Image, mtl: number = 0, icol: number = 0, ocol: number = 0) {
+        let colnv = 0
+        let coli = 0
+        let ucol = 0
+        let oimg = image.create(img.width, img.height)
+        let rix = 0
+        let riy = 0
+        let mt4l = mt4.length
+        let mti = mtl % mt4l
+        for (let imx = 0; imx < img.width; imx++) {
+            for (let imy = 0; imy < img.height; imy++) {
+                rix = imx % mt4[mti].width
+                riy = imy % mt4[mti].height
+                ucol = img.getPixel(imx, imy)
+                if (icol > 0) {
+                    if (icol == ucol) {
+                        if (mt4[mtl].getPixel(rix, riy) > 0) {
+                            oimg.setPixel(imx, imy, ocol)
+                        } else {
+                            oimg.setPixel(imx, imy, ucol)
+                        }
+                    }
+                } else {
+                    if (mt4[mtl].getPixel(rix, riy) > 0) {
+                        oimg.setPixel(imx, imy, ocol)
                     } else {
                         oimg.setPixel(imx, imy, ucol)
                     }
