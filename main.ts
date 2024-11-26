@@ -10,9 +10,15 @@ namespace images {
         . . . .
     `,
     img`
+        . . . .
+        . . . .
         . . f .
         . . . .
+    `,
+    img`
         f . . .
+        . . . .
+        . . f .
         . . . .
     `,
         img`
@@ -23,9 +29,15 @@ namespace images {
         `,
         img`
             f . f .
-            . . . f
+            . f . .
+            f . f .
+            . . . .
+        `,
+        img`
             f . f .
             . f . .
+            f . f .
+            . . . f
         `,
         img`
             f . f .
@@ -34,10 +46,17 @@ namespace images {
             . f . f
         `,
         img`
-            f . f .
-            . f f f
             f . f .
             f f . f
+            f . f .
+            f f f f
+        `,
+
+        img`
+            f . f .
+            f f . f
+            f . f .
+            . f f f
         `,
         img`
             f . f .
@@ -46,9 +65,15 @@ namespace images {
             f f f f
         `,
         img`
+            f f f .
+            f f f f
             f . f f
             f f f f
-            f f f .
+        `,
+        img`
+            f f f f
+            f f f f
+            f . f f
             f f f f
         `,
         img`
