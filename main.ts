@@ -213,27 +213,25 @@ namespace images {
      * fill matrix shader
      * render from color
      */
-    //%blockid=img_reshade
-    //%block="$img=screen_image_picker fill matrix shader $mtl from $icol to $ocol"
-    //%icol.shadow="colorindexpicker"
-    //%ocol.shadow="colorindexpicker"
-    //%mtl.min=0 mtl.max=8 mtl.defl=0
+    //%blockid=img_matrixshader
+    //%block="get $img=screen_image_picker to render matrix shader from $lCol"
+    //%lCol.shadow="lists_create_with" lCol.defl="colorindexpicker"
     //%group="better image"
     //%inlineInputMode=inline
     //%weight=30
-function MatrixShade (Uimg: Image, lCol: number[]) {
+export function MatrixShade (Uimg: Image, lCol: number[]) {
     let DotC = 0; let SumDot = 0; let DotIdx = 0; let remM = 0; let remX = 0; let remY = 0
     let Iimg = image.create(images.ImgSize(Uimg, images.imgsizes.width), images.ImgSize(Uimg, images.imgsizes.height))
     let SumCol = Math.floor(15 / Math.max(lCol.length - 1, 1))
     let SumMt4 = Math.abs(Math.round(SumCol / mt4.length))
-    for (let hy = 0; hy <= images.ImgSize(Iimg, images.imgsizes.height) - 1; hy++) {
-        for (let wx = 0; wx <= images.ImgSize(Iimg, images.imgsizes.width) - 1; wx++) {
+    for (let hy = 0; hy < Iimg.height; hy++) {
+        for (let wx = 0; wx < Img.width; wx++) {
             DotC = Uimg.getPixel(wx, hy)
             SumDot = Math.floor(DotC / SumCol)
             DotIdx = DotC % SumCol * SumMt4
             remM = DotIdx % mt4.length
-            remx = wx % images.ImgSize(mt4[remM], images.imgsizes.width)
-            remy = hy % images.ImgSize(mt4[remM], images.imgsizes.height)
+            remx = wx % mt4[remM].width
+            remy = hy % mt4[remM].height
             Iimg.setPixel(wx, hy, lCol[SumDot])
             if (mt4[remM].getPixel(remx, remy) > 0) {
                 Iimg.setPixel(wx, hy, lCol[Math.min(SumDot + 1, lCol.length - 1)])
