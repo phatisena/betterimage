@@ -291,8 +291,9 @@ export function MatrixShade (Uimg: Image, lCol: number[]) {
         if (Uidx > 0) {Sidx = Uidx }
         createRenderable(Sidx, function(srcimg) {
             if (Render) {
-            Iimg.fill(16)
-            stampImage(Iimg,srcimg,0,0)
+            Iimg.fill(scene.backgroundColor())
+            stampImage(scene.backgroundImage(),Iimg,0,0)
+            stampImage(Iimg,image.screenImage(),0,0)
             stampImage(MatrixShade(Iimg,lCol),srcimg,0,0)
             }
         })
