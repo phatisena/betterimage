@@ -51,7 +51,6 @@ namespace images {
             f . f .
             f f f f
         `,
-
         img`
             f . f .
             f f . f
@@ -245,12 +244,12 @@ namespace images {
     //%inlineInputMode=inline
     //%weight=30
 export function MatrixShade (Uimg: Image, lCol: number[]) {
-    let DotC = 0; let SumDot = 0; let DotIdx = 0; let remM = 0; let remX = 0; let remY = 0
+    let DotC = 0; let SumDot = 0; let DotIdx = 0; let remM = 0; let remx = 0; let remy = 0
     let Iimg = image.create(images.ImgSize(Uimg, images.imgsizes.width), images.ImgSize(Uimg, images.imgsizes.height))
     let SumCol = Math.floor(15 / Math.max(lCol.length - 1, 1))
     let SumMt4 = Math.abs(Math.round(SumCol / mt4.length))
-    for (let hy = 0; hy < Iimg.height; hy++) {
-        for (let wx = 0; wx < Img.width; wx++) {
+    for (let hy = 0; hy < Uimg.height; hy++) {
+        for (let wx = 0; wx < Uimg.width; wx++) {
             DotC = Uimg.getPixel(wx, hy)
             SumDot = Math.floor(DotC / SumCol)
             DotIdx = DotC % SumCol * SumMt4
