@@ -274,6 +274,17 @@ export function MatrixShade (Uimg: Image, lCol: number[]) {
     return Iimg
 }
     
+    /**
+     * advance image color replace
+     * and get return image in another colors
+     * from color input list
+     */
+    //%blockid=img_matrixrender
+    //%block="render matrix shader? $Render in z-index $Uidx from $lCol"
+    //%lCol.shadow="lists_create_with" lCol.defl="colorindexpicker"
+    //%group="better image"
+    //%inlineInputMode=inline
+    //%weight=30
     export function MatrixScreen(Render: boolean = false ,Uidx:number = 0, lCol: number[] = []) {
         let Iimg = image.create(scene.screenWidth(), scene.screenHeight())
         let Sidx = 999999999
