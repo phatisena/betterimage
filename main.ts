@@ -3,6 +3,15 @@ namespace images {
 
     export enum imgsizes { width, height}
 
+export function stampImage(src: Image, to: Image, x: number, y: number) {
+    if (!src || !to) { return; }
+    to.drawTransparentImage(src, x, y);
+}
+
+    export function createRenderable(index: number, handler: (screen: Image) => void) {
+        scene.createRenderable(index, handler);
+    }
+
     let mt4: Image[] = [img`
         . . . .
         . . . .
@@ -265,6 +274,19 @@ export function MatrixShade (Uimg: Image, lCol: number[]) {
     return Iimg
 }
     
+    export function MatrixScreen(Render: boolean = false ,Uidx:number = 0, lCol: number[] = []) {
+        let Iimg = image.create(scene.screenWidth(), scene.screenHeight())
+        let Sidx = 999999999
+        if (Uidx > 0) {Sidx = Uidx }
+        createRenderable(Sidx, function(srcimg) {
+            if (Render) {
+            Iimg.fill(16)
+            stampImage(Iimg,srcimg,0,0)
+            stampImage(MatrixShade(Iimg,lCol),srcimg,0,0)
+            }
+        })
+    }
+
     /**
      * advance image overalap
      * the another image
