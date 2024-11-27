@@ -257,6 +257,7 @@ export function MatrixShade (Uimg: Image, lCol: number[]) {
     let Iimg = image.create(images.ImgSize(Uimg, images.imgsizes.width), images.ImgSize(Uimg, images.imgsizes.height))
     let SumCol = 15 / Math.max(lCol.length - 1, 1)
     let SumMt4 = Math.abs(SumCol / mt4.length)
+    if (mt4.length > SumCol) {SumMt4 = Math.abs(mt4.length / SumCol)}
     for (let hy = 0; hy < Uimg.height; hy++) {
         for (let wx = 0; wx < Uimg.width; wx++) {
             DotC = Uimg.getPixel(wx, hy)
@@ -292,7 +293,6 @@ export function MatrixShade (Uimg: Image, lCol: number[]) {
         createRenderable(Sidx, function(srcimg) {
             if (Render) {
             Iimg.fill(scene.backgroundColor())
-            stampImage(scene.backgroundImage(),Iimg,0,0)
             stampImage(Iimg,image.screenImage(),0,0)
             stampImage(MatrixShade(Iimg,lCol),srcimg,0,0)
             }
