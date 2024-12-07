@@ -267,7 +267,7 @@ namespace images {
     //%weight=30
 export function MatrixShade (Uimg: Image, lCol: number[]) {
     let DotC = 0; let SumDot = 0; let DotIdx = 0; let remM = 0; let remx = 0; let remy = 0
-    let Iimg = image.create(images.ImgSize(Uimg, images.imgsizes.width), images.ImgSize(Uimg, images.imgsizes.height))
+    let Iimg = image.create(Uimg.width,Uimg.height)
     let SumCol = calculatePercentage(lCol.length,16,15,true)
     let SumMt4 = calculatePercentage(SumCol,mt4.length,mt4.length-1,true)
     for (let hy = 0; hy < Uimg.height; hy++) {
