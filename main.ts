@@ -260,7 +260,7 @@ namespace images {
      * render from color
      */
     //%blockid=img_matrixshader
-    //%block="get $img=screen_image_picker to render matrix shader from $lCol"
+    //%block="get $Uimg=screen_image_picker to render matrix shader from $lCol"
     //%lCol.shadow="lists_create_with" lCol.defl="colorindexpicker"
     //%group="better image"
     //%inlineInputMode=inline
