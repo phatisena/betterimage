@@ -3,10 +3,23 @@ namespace images {
 
     export enum imgsizes { width, height}
 
-export function stampImage(src: Image, to: Image, x: number, y: number) {
-    if (!src || !to) { return; }
-    to.drawTransparentImage(src, x, y);
-}
+    export function calculatePercentage(value: number, maxValue: number, maxPercentage: number, floated: boolean = false): number {
+        if (value > maxValue) {
+            console.error(`Value exceeds the maximum allowed. ${value} : ${maxValue}`);
+            return maxPercentage;
+        }
+        value = Math.min(value, maxValue)
+        let percentage = Math.floor((value / maxValue) * maxPercentage);
+        if (floated) {
+            percentage = (value / maxValue) * maxPercentage;
+        }
+        return Math.min(percentage, maxPercentage);
+    }
+
+    export function stampImage(src: Image, to: Image, x: number, y: number) {
+        if (!src || !to) { return; }
+        to.drawTransparentImage(src, x, y);
+    }
 
     export function createRenderable(index: number, handler: (screen: Image) => void) {
         scene.createRenderable(index, handler);
@@ -255,8 +268,8 @@ export function stampImage(src: Image, to: Image, x: number, y: number) {
 export function MatrixShade (Uimg: Image, lCol: number[]) {
     let DotC = 0; let SumDot = 0; let DotIdx = 0; let remM = 0; let remx = 0; let remy = 0
     let Iimg = image.create(images.ImgSize(Uimg, images.imgsizes.width), images.ImgSize(Uimg, images.imgsizes.height))
-    let SumCol = Math.floor(15 / Math.max(lCol.length - 1, 1))
-    let SumMt4 = Math.abs(Math.round(SumCol / mt4.length))
+    let SumCol = calculatePercentage(lCol.length,16,15,true)
+    let SumMt4 = calculatePercentage(SumCol,mt4.length,mt4.length-1,true)
     for (let hy = 0; hy < Uimg.height; hy++) {
         for (let wx = 0; wx < Uimg.width; wx++) {
             DotC = Uimg.getPixel(wx, hy)
