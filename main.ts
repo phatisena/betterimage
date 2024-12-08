@@ -276,7 +276,7 @@ namespace images {
             todopos.removeAt(0)
             for (let diri = 0;diri < dirpin.length; diri++) {
                 nextpos = [curpos[0] + dirpin[0][diri],curpos[1] + dirpin[1][diri]]
-                if (colorCut.indexOf(img1.getPixel(xw + nextpos[0],yh + nextpos[1])) < 0) {
+                if (colorCut.indexOf(img1.getPixel(xw + nextpos[0],yh + nextpos[1])) < 0 && img1.getPixel(xw + nextpos[0],yh + nextpos[1]) != img0.getPixel(nextpos[0],nextpos[1])) {
                     img1.setPixel(xw + nextpos[0],yh + nextpos[1],img0.getPixel(nextpos[0],nextpos[1]))
                     todopos.push([nextpos[0],nextpos[1]])
                 }
