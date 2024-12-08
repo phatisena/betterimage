@@ -263,6 +263,7 @@ namespace images {
     //%inlineInputMode=inline
     //%weight=50
     export function StampCut(img0:Image,img1:Image,colorCut:number[],xw:number,yh:number) {
+        let stammed:number[][] = []
         let todopos:number[][] = []
         let cenpos:number[] = [Math.floor(img0.width / 2),Math.floor(img0.height / 2)]
         let dirpin:number[][] = [[1,0,-1,0],[0,1,0,-1]]
@@ -271,14 +272,16 @@ namespace images {
         if (colorCut.indexOf(img1.getPixel(xw + cenpos[0],yh + cenpos[1])) >= 0) { return img1 }
         img1.setPixel(xw + nextpos[0],yh + nextpos[1],img0.getPixel(nextpos[0],nextpos[1]))
         todopos.push([nextpos[0],nextpos[1]])
+        stammed.push([nextpos[0],nextpos[1]])
         while (todopos.length > 0) {
             curpos = [todopos[0][0],todopos[0][1]]
             todopos.removeAt(0)
             for (let diri = 0;diri < dirpin.length; diri++) {
                 nextpos = [curpos[0] + dirpin[0][diri],curpos[1] + dirpin[1][diri]]
-                if (colorCut.indexOf(img1.getPixel(xw + nextpos[0],yh + nextpos[1])) < 0 && img1.getPixel(xw + nextpos[0],yh + nextpos[1]) != img0.getPixel(nextpos[0],nextpos[1])) {
+                if (colorCut.indexOf(img1.getPixel(xw + nextpos[0],yh + nextpos[1])) < 0 && stammed.indexOf([nextpos[0],nextpos[1]]) < 0) {
                     img1.setPixel(xw + nextpos[0],yh + nextpos[1],img0.getPixel(nextpos[0],nextpos[1]))
                     todopos.push([nextpos[0],nextpos[1]])
+                    stammed.push([nextpos[0],nextpos[1]])
                 }
             }
         }
