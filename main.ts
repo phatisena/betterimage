@@ -255,6 +255,34 @@ namespace images {
         return oimg
     }
 
+    //%blockid=img_drawandcrop
+    //%block="stamp $img0=screen_image_picker to $img1 in color cut $colorCut at x $xw y $yh"
+    //%img1.shadow=variables_get img1.defl=picture
+    //%colorCut.shadow="lists_create_with" colorCut.defl=colorindexpicker
+    //%group="draw and crop"
+    //%inlineInputMode=inline
+    //%weight=10
+    export function StampCut(img0:Image,img1:Image,colorCut:number[],xw:number,yh:number) {
+        let todopos:number[][] = []
+        let cenpos:number[] = [Math.floor(img0.width / 2),Math.floor(img0.height / 2)]
+        let dirpin:number[][] = [[1,0,-1,0],[0,1,0,-1]]
+        let nextpos:number[] = [cenpos[0],cenpos[1]]
+        let curpos:number[] = [nextpos[0],nextpos[1]]
+        if (colorCut.indexOf(img1.getPixel(xw + cenpos[0],yh + cenpos[1])) >= 0) { return; }
+        img1.setPixel(xw + nextpos[0],yh + nextpos[1],img0.getPixel(nextpos[0],nextpos[1]))
+        todopos.push([nextpos[0],nextpos[1]])
+        while (todopos.length > 0) {
+            curpos = [todopos[0][0],todopos[0][1]]
+            todopos.removeAt(0)
+            for (let diri = 0;diri < dirpin.length; diri++) {
+                nextpos = [curpos[0] + dirpin[0][diri],curpos[1] + dirpin[1][diri]]
+                if (colorCut.indexOf(img1.getPixel(xw + nextpos[0],yh + nextpos[1])) < 0) {
+                    img1.setPixel(xw + nextpos[0],yh + nextpos[1],img0.getPixel(nextpos[0],nextpos[1]))
+                    todopos.push([nextpos[0],nextpos[1]])
+                }
+            }
+        }
+    }
     /**
      * fill matrix shader
      * render from color
@@ -265,6 +293,7 @@ namespace images {
     //%group="better image"
     //%inlineInputMode=inline
     //%weight=30
+    //%blockHidden=true
 export function MatrixShade (Uimg: Image, lCol: number[]) {
     let DotC = 0; let SumDot = 0; let DotIdx = 0; let remM = 0; let remx = 0; let remy = 0
     let Iimg = image.create(Uimg.width,Uimg.height)
@@ -298,6 +327,7 @@ export function MatrixShade (Uimg: Image, lCol: number[]) {
     //%group="better image"
     //%inlineInputMode=inline
     //%weight=30
+    //%blockHidden=true
     export function MatrixScreen(Render: boolean = false ,Uidx:number = 0, lCol: number[] = []) {
         let Iimg = image.create(scene.screenWidth(), scene.screenHeight())
         let Sidx = 999999999
