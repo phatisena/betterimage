@@ -1,6 +1,6 @@
 {
     "name": "betterimage",
-    "version": "5.1.3",
+    "version": "5.2.0",
     "description": "",
     "dependencies": {
         "device": "*"
