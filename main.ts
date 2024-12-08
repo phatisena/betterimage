@@ -112,7 +112,7 @@ namespace images {
     //%block="$img=screen_image_picker $imgsize"
     //%group="better image"
     //%inlineInputMode=inline
-    //%weight=20
+    //%weight=60
     export function ImgSize(img: Image, imgsize: imgsizes) {
         switch (imgsize) {
             case imgsizes.width:
@@ -136,7 +136,7 @@ namespace images {
     //%lbcol.shadow="lists_create_with" lbcol.defl="colorindexpicker"
     //%group="better image"
     //%inlineInputMode=inline
-    //%weight=30
+    //%weight=40
     export function ReColor(img: Image, lacol: number[], lbcol: number[]) {
         let colnv = 0
         let coli = 0
@@ -173,7 +173,7 @@ namespace images {
     //%mtl.min=0 mtl.max=8 mtl.defl=0
     //%group="better image"
     //%inlineInputMode=inline
-    //%weight=30
+    //%weight=20
     export function ReColShade(img: Image, mtl: number = 0, lacol: number[], lbcol: number[]) {
         let colnv = 0
         let coli = 0
@@ -220,7 +220,7 @@ namespace images {
     //%mtl.min=0 mtl.max=8 mtl.defl=0
     //%group="better image"
     //%inlineInputMode=inline
-    //%weight=30
+    //%weight=10
     export function ReShade(img: Image, mtl: number = 0, icol: number = 0, ocol: number = 0) {
         let colnv = 0
         let coli = 0
@@ -259,9 +259,9 @@ namespace images {
     //%block="stamp $img0=screen_image_picker to $img1 in color cut $colorCut at x $xw y $yh"
     //%img1.shadow=variables_get img1.defl=picture
     //%colorCut.shadow="lists_create_with" colorCut.defl=colorindexpicker
-    //%group="draw and crop"
+    //%group="better image"
     //%inlineInputMode=inline
-    //%weight=10
+    //%weight=50
     export function StampCut(img0:Image,img1:Image,colorCut:number[],xw:number,yh:number) {
         let todopos:number[][] = []
         let cenpos:number[] = [Math.floor(img0.width / 2),Math.floor(img0.height / 2)]
@@ -292,29 +292,29 @@ namespace images {
     //%lCol.shadow="lists_create_with" lCol.defl="colorindexpicker"
     //%group="better image"
     //%inlineInputMode=inline
-    //%weight=30
+    //%weight=5
     //%blockHidden=true
-export function MatrixShade (Uimg: Image, lCol: number[]) {
-    let DotC = 0; let SumDot = 0; let DotIdx = 0; let remM = 0; let remx = 0; let remy = 0
-    let Iimg = image.create(Uimg.width,Uimg.height)
-    let SumCol = calculatePercentage(lCol.length,16,15,true)
-    let SumMt4 = calculatePercentage(SumCol,mt4.length,mt4.length-1,true)
-    for (let hy = 0; hy < Uimg.height; hy++) {
-        for (let wx = 0; wx < Uimg.width; wx++) {
-            DotC = Uimg.getPixel(wx, hy)
-            SumDot = Math.floor(DotC / SumCol)
-            DotIdx = DotC % SumCol * SumMt4
-            remM = DotIdx % mt4.length
-            remx = wx % mt4[remM].width
-            remy = hy % mt4[remM].height
-            Iimg.setPixel(wx, hy, lCol[SumDot])
-            if (mt4[remM].getPixel(remx, remy) > 0) {
-                Iimg.setPixel(wx, hy, lCol[Math.min(SumDot + 1, lCol.length - 1)])
+    export function MatrixShade (Uimg: Image, lCol: number[]) {
+        let DotC = 0; let SumDot = 0; let DotIdx = 0; let remM = 0; let remx = 0; let remy = 0
+        let Iimg = image.create(Uimg.width,Uimg.height)
+        let SumCol = calculatePercentage(lCol.length,16,15,true)
+        let SumMt4 = calculatePercentage(SumCol,mt4.length,mt4.length-1,true)
+        for (let hy = 0; hy < Uimg.height; hy++) {
+            for (let wx = 0; wx < Uimg.width; wx++) {
+                DotC = Uimg.getPixel(wx, hy)
+                SumDot = Math.floor(DotC / SumCol)
+                DotIdx = DotC % SumCol * SumMt4
+                remM = DotIdx % mt4.length
+                remx = wx % mt4[remM].width
+                remy = hy % mt4[remM].height
+                Iimg.setPixel(wx, hy, lCol[SumDot])
+                if (mt4[remM].getPixel(remx, remy) > 0) {
+                    Iimg.setPixel(wx, hy, lCol[Math.min(SumDot + 1, lCol.length - 1)])
+                }
             }
         }
+        return Iimg
     }
-    return Iimg
-}
     
     /**
      * advance image color replace
@@ -353,7 +353,7 @@ export function MatrixShade (Uimg: Image, lCol: number[]) {
     //%Dy.min=-1 Dy.max=1 Dy.defl=0
     //%group="better image"
     //%inlineInputMode=inline
-    //%weight=40
+    //%weight=0
     export function ImgOverlapImg(ImgI: Image, ImgO: Image, Ix: number, Iy: number, Dx: number, Dy: number) {
         if (ImgI.width > ImgO.height || ImgI.width > ImgO.height) { return false }
         if (Dy == 0 && Math.abs(Dx) > 0) {
