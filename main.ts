@@ -268,7 +268,7 @@ namespace images {
         let dirpin:number[][] = [[1,0,-1,0],[0,1,0,-1]]
         let nextpos:number[] = [cenpos[0],cenpos[1]]
         let curpos:number[] = [nextpos[0],nextpos[1]]
-        if (colorCut.indexOf(img1.getPixel(xw + cenpos[0],yh + cenpos[1])) >= 0) { return; }
+        if (colorCut.indexOf(img1.getPixel(xw + cenpos[0],yh + cenpos[1])) >= 0) { return img1 }
         img1.setPixel(xw + nextpos[0],yh + nextpos[1],img0.getPixel(nextpos[0],nextpos[1]))
         todopos.push([nextpos[0],nextpos[1]])
         while (todopos.length > 0) {
@@ -282,6 +282,7 @@ namespace images {
                 }
             }
         }
+        return img1.clone()
     }
     /**
      * fill matrix shader
