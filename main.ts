@@ -164,7 +164,7 @@ namespace images {
     //%block="$img=screen_image_picker matrix shader $mtl from $lacol to $lbcol"
     //%lacol.shadow="lists_create_with" lacol.defl="colorindexpicker"
     //%lbcol.shadow="lists_create_with" lbcol.defl="colorindexpicker"
-    //%mtl.min=0 mtl.max=8 mtl.defl=0
+    //%mtl.min=0 mtl.max=12 mtl.defl=0
     //%group="image manager"
     //%inlineInputMode=inline
     //%weight=9
@@ -203,7 +203,7 @@ namespace images {
     //%block="$img=screen_image_picker fill matrix shader $mtl from $icol to $ocol"
     //%icol.shadow="colorindexpicker"
     //%ocol.shadow="colorindexpicker"
-    //%mtl.min=0 mtl.max=8 mtl.defl=0
+    //%mtl.min=0 mtl.max=12 mtl.defl=0
     //%group="image manager"
     //%inlineInputMode=inline
     //%weight=8
