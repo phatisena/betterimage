@@ -311,7 +311,7 @@ namespace images {
 
     //%blockid=img_drawandcrop
     //%block="stamp $img0=screen_image_picker to $img1 and cutting color with $colorCut at x $xw y $yh"
-    //%img1.shadow=variables_get img1.defl=picture
+    //%img1.shadow=variables_get
     //%colorCut.shadow="lists_create_with" colorCut.defl=colorindexpicker
     //%group="better image"
     //%inlineInputMode=inline
