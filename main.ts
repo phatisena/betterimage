@@ -1,14 +1,3 @@
-
-interface pos {
-    x:number
-    y:number
-}
-
-interface ftimg {
-    fimg:Image
-    timg:Image
-}
-
 namespace images {
 
     export enum imgsizes { width, height}
@@ -24,11 +13,6 @@ namespace images {
             percentage = (value / maxValue) * maxPercentage;
         }
         return Math.min(percentage, maxPercentage);
-    }
-
-    export function stampImg(src: Image, to: Image, x: number, y: number) {
-        if (!src || !to) { return; }
-        to.drawTransparentImage(src, x, y);
     }
 
     let mt4: Image[] = [img`
@@ -110,51 +94,24 @@ namespace images {
             f f f f
         `]
 
-    //%blockid=img_posshadow
-    //%block="x: $x y: $y"
-    //%group="main shadow"
-    //%inlineInputMode=inline
-    //%weight=10
-    export function _posnum(x:number,y:number) {
-        let upoint:pos;
-        upoint.x = x
-        upoint.y = y
-        return upoint
-    }
-
-    //%blockid=img_ftimgshadow
-    //%block="stamp $f=screen_image_picker to $t=screen_image_picker"
-    //%group="main shadow"
-    //%inlineInputMode=inline
-    //%weight=5
-    export function _ftimg(f: Image, t: Image) {
-        let uftimg: ftimg;
-        uftimg.fimg = f
-        uftimg.timg = t
-        return uftimg
-    }
-
     //%blockid=img_stampimage
-    //%block="$duoimg at $point"
-    //%duoimg.shadow="img_ftimgshadow"
-    //%point.shadow="img_posshadow"
+    //%block="( stamp $src=screen_image_picker to $to=variables_get ) at ( X: $x Y: $y )"
     //%group="image oparetor"
     //%inlineInputMode=inline
-    //%weight=20
-    export function stampImage(duoimg:ftimg, point:pos) {
-        if (!duoimg.fimg || !duoimg.timg) { return; }
-        duoimg.timg.drawTransparentImage(duoimg.fimg, point.x, point.y);
+    //%weight=10
+    export function stampImage(src: Image, to: Image, x: number, y: number) {
+        if (!src || !to) { return; }
+        to.drawTransparentImage(src, x, y);
     }
 
     //%blockid=img_squareimage
     //%block="$uimg=screen_image_picker as square"
     //%group="image oparetor"
     //%inlineInputMode=inline
-    //%weight=18
+    //%weight=9
     export function squareImage(uimg:Image) {
-        let imax = Math.max(uimg.width,uimg.height)
-        let uuimg = image.create(imax,imax)
-        stampImg(uimg, uuimg, Math.floor((imax / 2) - (uimg.width / 2)), Math.floor((imax / 2) - (uimg.height / 2)))
+        let imax = Math.max(uimg.width,uimg.height), uuimg = image.create(imax,imax)
+        stampImage(uimg, uuimg, Math.floor((imax / 2) - (uimg.width / 2)), Math.floor((imax / 2) - (uimg.height / 2)))
         uimg = uuimg.clone()
     }
 
@@ -164,9 +121,9 @@ namespace images {
      */
     //%blockid=img_imgsizes
     //%block="$img=screen_image_picker $imgsize"
-    //%group="better image"
+    //%group="image oparetor"
     //%inlineInputMode=inline
-    //%weight=60
+    //%weight=8
     export function ImgSize(img: Image, imgsize: imgsizes) {
         switch (imgsize) {
             case imgsizes.width:
@@ -188,18 +145,14 @@ namespace images {
     //%block="$img=screen_image_picker re stamp from $lacol to $lbcol"
     //%lacol.shadow="lists_create_with" lacol.defl="colorindexpicker"
     //%lbcol.shadow="lists_create_with" lbcol.defl="colorindexpicker"
-    //%group="better image"
+    //%group="image manager"
     //%inlineInputMode=inline
-    //%weight=40
+    //%weight=10
     export function ReColor(img: Image, lacol: number[], lbcol: number[]) {
-        let colnv = 0
-        let coli = 0
-        let ucol = 0
-        let oimg = image.create(img.width, img.height)
+        let colnv = 0, oimg = image.create(img.width, img.height)
         for (let imx = 0; imx < img.width; imx++) {
             for (let imy = 0; imy < img.height; imy++) {
-                ucol = img.getPixel(imx, imy)
-                coli = lacol.indexOf(ucol)
+                const ucol = img.getPixel(imx, imy), coli = lacol.indexOf(ucol)
                 if ( coli >= 0) { colnv = lacol[coli] } else { colnv = ucol}
                 if (ucol >= 0) {
                     if (coli >= 0) {
@@ -210,7 +163,7 @@ namespace images {
                 }
             }
         }
-        return oimg
+        img = oimg
     }
 
     /**
@@ -225,41 +178,33 @@ namespace images {
     //%lacol.shadow="lists_create_with" lacol.defl="colorindexpicker"
     //%lbcol.shadow="lists_create_with" lbcol.defl="colorindexpicker"
     //%mtl.min=0 mtl.max=8 mtl.defl=0
-    //%group="better image"
+    //%group="image manager"
     //%inlineInputMode=inline
-    //%weight=20
-    export function ReColShade(img: Image, mtl: number = 0, lacol: number[], lbcol: number[]) {
-        let colnv = 0
-        let coli = 0
-        let ucol = 0
-        let oimg = image.create(img.width, img.height)
-        let rix = 0
-        let riy = 0
-        let mt4l = mt4.length
-        let mti = mtl % mt4l
-        for (let imx = 0; imx < img.width; imx++) {
-            for (let imy = 0; imy < img.height; imy++) {
-                rix = imx % mt4[mti].width
-                riy = imy % mt4[mti].height
-                ucol = img.getPixel(imx, imy)
-                coli = lacol.indexOf(ucol)
-                if (coli >= 0) { colnv = lacol[coli] } else { colnv = ucol }
-                if (ucol >= 0) {
-                    if (coli >= 0) {
+    //%weight=9
+    export function ReColorShade(img: Image, mtl: number = 0, lacol: number[], lbcol: number[]) {
+        let colnv2 = 0, oimg2 = image.create(img.width, img.height)
+        let mt4l = mt4.length, mti = mtl % mt4l
+        for (let imx2 = 0; imx2 < img.width; imx2++) {
+            for (let imy2 = 0; imy2 < img.height; imy2++) {
+                const rix = imx2 % mt4[mti].width, riy = imy2 % mt4[mti].height
+                const ucol2 = img.getPixel(imx2, imy2), coli2 = lacol.indexOf(ucol2)
+                if (coli2 >= 0) { colnv2 = lacol[coli2] } else { colnv2 = ucol2 }
+                if (ucol2 >= 0) {
+                    if (coli2 >= 0) {
                         if (mt4[mti].getPixel(rix, riy) > 0){
-                            oimg.setPixel(imx, imy, lbcol[coli])
+                            oimg2.setPixel(imx2, imy2, lbcol[coli2])
                         } else {
-                            oimg.setPixel(imx, imy, lacol[coli])
+                            oimg2.setPixel(imx2, imy2, lacol[coli2])
                         }
                     } else {
                         if (mt4[mti].getPixel(rix, riy) > 0) {
-                            oimg.setPixel(imx, imy, ucol)
+                            oimg2.setPixel(imx2, imy2, ucol2)
                         }
                     }
                 }
             }
         }
-        return oimg
+        img = oimg2
     }
 
     /**
@@ -272,56 +217,48 @@ namespace images {
     //%icol.shadow="colorindexpicker"
     //%ocol.shadow="colorindexpicker"
     //%mtl.min=0 mtl.max=8 mtl.defl=0
-    //%group="better image"
+    //%group="image manager"
     //%inlineInputMode=inline
-    //%weight=10
+    //%weight=8
     export function ReShade(img: Image, mtl: number = 0, icol: number = 0, ocol: number = 0) {
-        let colnv = 0
-        let coli = 0
-        let ucol = 0
-        let oimg = image.create(img.width, img.height)
-        let rix = 0
-        let riy = 0
-        let mt4l = mt4.length
-        let mti = mtl % mt4l
-        for (let imx = 0; imx < img.width; imx++) {
-            for (let imy = 0; imy < img.height; imy++) {
-                rix = imx % mt4[mti].width
-                riy = imy % mt4[mti].height
-                ucol = img.getPixel(imx, imy)
+        let colnv3 = 0, coli3 = 0
+        let oimg3 = image.create(img.width, img.height)
+        let mt4l2 = mt4.length, mti2 = mtl % mt4l2
+        for (let imx3 = 0; imx3 < img.width; imx3++) {
+            for (let imy3 = 0; imy3 < img.height; imy3++) {
+                const rix2 = imx3 % mt4[mti2].width, riy2 = imy3 % mt4[mti2].height, ucol3 = img.getPixel(imx3, imy3)
                 if (icol > 0) {
-                    if (icol == ucol) {
-                        if (mt4[mti].getPixel(rix, riy) > 0) {
-                            oimg.setPixel(imx, imy, ocol)
+                    if (icol == ucol3) {
+                        if (mt4[mti2].getPixel(rix2, riy2) > 0) {
+                            oimg3.setPixel(imx3, imy3, ocol)
                         } else {
-                            oimg.setPixel(imx, imy, ucol)
+                            oimg3.setPixel(imx3, imy3, ucol3)
                         }
                     }
                 } else {
-                    if (mt4[mti].getPixel(rix, riy) > 0) {
-                        oimg.setPixel(imx, imy, ocol)
+                    if (mt4[mti2].getPixel(rix2, riy2) > 0) {
+                        oimg3.setPixel(imx3, imy3, ocol)
                     } else {
-                        oimg.setPixel(imx, imy, ucol)
+                        oimg3.setPixel(imx3, imy3, ucol3)
                     }
                 }
             }
         }
-        return oimg
+        return oimg3
     }
 
     //%blockid=img_drawandcrop
     //%block="stamp $img0=screen_image_picker to $img1 and cutting color with $colorCut at x $xw y $yh"
     //%img1.shadow=variables_get
     //%colorCut.shadow="lists_create_with" colorCut.defl=colorindexpicker
-    //%group="better image"
+    //%group="image manager"
     //%inlineInputMode=inline
-    //%weight=50
+    //%weight=7
     export function StampCut(img0:Image,img1:Image,colorCut:number[],xw:number,yh:number) {
         if (!img0 || !img1) return;
         for (let x = 0;x < img0.width;x++) {
             for (let y = 0;y < img0.height;y++) {
-                const tcolor = img0.getPixel(x,y)
-                const fcolor = img1.getPixel(xw+x,yh+y)
+                const tcolor = img0.getPixel(x,y), fcolor = img1.getPixel(xw+x,yh+y)
                 if (tcolor > 0) {
                     if (colorCut.indexOf(fcolor) >= 0) {
                         img1.setPixel(xw+x,yh+y,fcolor)
@@ -338,10 +275,10 @@ namespace images {
      * to checking overlap the image
      */
     //%blockid=img_imgoverlap
-    //%block="Image $ImgI=screen_image_picker overlaping OtherImage $ImgO=screen_image_picker At OffsetX $Ix OffsetY $Iy And DirX $Dx DirY $Dy"
+    //%block="if ( image $ImgI=screen_image_picker overlap otherImage $ImgO=screen_image_picker ) At ( OffsetX $Ix OffsetY $Iy ) And ( DirX $Dx DirY $Dy )"
     //%Dx.min=-1 Dx.max=1 Dx.defl=0
     //%Dy.min=-1 Dy.max=1 Dy.defl=0
-    //%group="better image"
+    //%group="image overalap otherimage"
     //%inlineInputMode=inline
     //%weight=0
     export function ImgOverlapImg(ImgI: Image, ImgO: Image, Ix: number, Iy: number, Dx: number, Dy: number) {
@@ -356,9 +293,9 @@ namespace images {
                     }
                 }
             } else if (Dx < 0) {
-                for (let Nx = ImgI.width; Nx >= 0; Nx--) {
-                    for (let Ny = 0; Ny < ImgI.height; Ny++) {
-                        if (ImgI.getPixel(Nx, Ny) > 0 && ImgO.getPixel(Ix + Nx, Iy + Ny) > 0) {
+                for (let Nx2 = ImgI.width; Nx2 >= 0; Nx2--) {
+                    for (let Ny2 = 0; Ny2 < ImgI.height; Ny2++) {
+                        if (ImgI.getPixel(Nx2, Ny2) > 0 && ImgO.getPixel(Ix + Nx2, Iy + Ny2) > 0) {
                             return true
                         }
                     }
@@ -366,17 +303,17 @@ namespace images {
             }
         } else if (Dx == 0 && Math.abs(Dy) > 0) {
             if (Dy > 0) {
-                for (let Ny = 0; Ny < ImgI.height; Ny++) {
-                    for (let Nx = 0; Nx < ImgI.width; Nx++) {
-                        if (ImgI.getPixel(Nx, Ny) > 0 && ImgO.getPixel(Ix + Nx, Iy + Ny) > 0) {
+                for (let Ny3 = 0; Ny3 < ImgI.height; Ny3++) {
+                    for (let Nx3 = 0; Nx3 < ImgI.width; Nx3++) {
+                        if (ImgI.getPixel(Nx3, Ny3) > 0 && ImgO.getPixel(Ix + Nx3, Iy + Ny3) > 0) {
                             return true
                         }
                     }
                 }
             } else if (Dy < 0) {
-                for (let Ny = ImgI.height; Ny >= 0; Ny--) {
-                    for (let Nx = 0; Nx < ImgI.width; Nx++) {
-                        if (ImgI.getPixel(Nx, Ny) > 0 && ImgO.getPixel(Ix + Nx, Iy + Ny) > 0) {
+                for (let Ny4 = ImgI.height; Ny4 >= 0; Ny4--) {
+                    for (let Nx4 = 0; Nx4 < ImgI.width; Nx4++) {
+                        if (ImgI.getPixel(Nx4, Ny4) > 0 && ImgO.getPixel(Ix + Nx4, Iy + Ny4) > 0) {
                             return true
                         }
                     }
@@ -387,4 +324,3 @@ namespace images {
     }
     
 }
-
