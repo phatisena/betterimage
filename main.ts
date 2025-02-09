@@ -135,7 +135,9 @@ namespace images {
     }
 
     //%blockid=img_stampimage
-    //%block="$duoimg=img_ftimgshadow at $point=img_posshadow"
+    //%block="$duoimg at $point"
+    //%duoimg.shadow="img_ftimgshadow"
+    //%point.shadow="img_posshadow"
     //%group="image oparetor"
     //%inlineInputMode=inline
     //%weight=20
@@ -327,39 +329,6 @@ namespace images {
                 }
             }
         }
-    }
-
-    /**
-     * fill matrix shader
-     * render from color
-     */
-    //%blockid=img_matrixshader
-    //%block="get $Uimg=screen_image_picker to render matrix shader from $lCol"
-    //%lCol.shadow="lists_create_with" lCol.defl="colorindexpicker"
-    //%group="better image"
-    //%inlineInputMode=inline
-    //%weight=5
-    //%blockHidden=true
-    export function MatrixShade (Uimg: Image, lCol: number[]) {
-        let DotC = 0; let SumDot = 0; let DotIdx = 0; let remM = 0; let remx = 0; let remy = 0
-        let Iimg = image.create(Uimg.width,Uimg.height)
-        let SumCol = calculatePercentage(lCol.length,16,15,true)
-        let SumMt4 = calculatePercentage(SumCol,mt4.length,mt4.length-1,true)
-        for (let hy = 0; hy < Uimg.height; hy++) {
-            for (let wx = 0; wx < Uimg.width; wx++) {
-                DotC = Uimg.getPixel(wx, hy)
-                SumDot = Math.floor(DotC / SumCol)
-                DotIdx = DotC % SumCol * SumMt4
-                remM = DotIdx % mt4.length
-                remx = wx % mt4[remM].width
-                remy = hy % mt4[remM].height
-                Iimg.setPixel(wx, hy, lCol[SumDot])
-                if (mt4[remM].getPixel(remx, remy) > 0) {
-                    Iimg.setPixel(wx, hy, lCol[Math.min(SumDot + 1, lCol.length - 1)])
-                }
-            }
-        }
-        return Iimg
     }
 
     /**
