@@ -151,7 +151,7 @@ namespace images {
                 }
             }
         }
-        img = oimg
+        return oimg
     }
 
     /**
@@ -192,7 +192,7 @@ namespace images {
                 }
             }
         }
-        img = oimg2
+        return oimg2
     }
 
     /**
@@ -242,7 +242,7 @@ namespace images {
     //%inlineInputMode=inline
     //%weight=7
     export function StampCutter(img0:Image,img1:Image,colorCut:number[],xw:number,yh:number) {
-        if (!img0 || !img1) return;
+        if (!img0 || !img1) return undefined
         for (let x = 0;x < img0.width;x++) {
             for (let y = 0;y < img0.height;y++) {
                 const tcolor = img0.getPixel(x,y), fcolor = img1.getPixel(xw+x,yh+y)
@@ -253,6 +253,7 @@ namespace images {
                 }
             }
         }
+        return img1
     }
 
     /**
