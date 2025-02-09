@@ -2,19 +2,6 @@ namespace images {
 
     export enum imgsizes { width, height}
 
-    export function calculatePercentage(value: number, maxValue: number, maxPercentage: number, floated: boolean = false): number {
-        if (value > maxValue) {
-            console.error(`Value exceeds the maximum allowed. ${value} : ${maxValue}`);
-            return maxPercentage;
-        }
-        value = Math.min(value, maxValue)
-        let percentage = Math.floor((value / maxValue) * maxPercentage);
-        if (floated) {
-            percentage = (value / maxValue) * maxPercentage;
-        }
-        return Math.min(percentage, maxPercentage);
-    }
-
     let mt4: Image[] = [img`
         . . . .
         . . . .
@@ -95,7 +82,7 @@ namespace images {
         `]
 
     //%blockid=img_stampimage
-    //%block="( stamp $src=screen_image_picker to $to=variables_get ) at ( X: $x Y: $y )"
+    //%block="stamp $src=screen_image_picker to $to=variables_get at X: $x Y: $y"
     //%group="image oparetor"
     //%inlineInputMode=inline
     //%weight=10
@@ -275,7 +262,7 @@ namespace images {
      * to checking overlap the image
      */
     //%blockid=img_imgoverlap
-    //%block="if ( image $ImgI=screen_image_picker overlap otherImage $ImgO=screen_image_picker ) At ( OffsetX $Ix OffsetY $Iy ) And ( DirX $Dx DirY $Dy )"
+    //%block="image $ImgI=screen_image_picker overlap otherimage $ImgO=screen_image_picker At OffsetX $Ix OffsetY $Iy And DirX $Dx DirY $Dy"
     //%Dx.min=-1 Dx.max=1 Dx.defl=0
     //%Dy.min=-1 Dy.max=1 Dy.defl=0
     //%group="image overalap otherimage"
