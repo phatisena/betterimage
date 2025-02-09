@@ -82,7 +82,7 @@ namespace images {
         `]
 
     //%blockid=img_stampimage
-    //%block="stamp $src=screen_image_picker to $to=variables_get at X: $x Y: $y"
+    //%block="stamp $src=screen_image_picker to $to=screen_image_picker at X: $x Y: $y"
     //%group="image oparetor"
     //%inlineInputMode=inline
     //%weight=10
@@ -235,13 +235,12 @@ namespace images {
     }
 
     //%blockid=img_drawandcrop
-    //%block="stamp $img0=screen_image_picker to $img1 and cutting color with $colorCut at x $xw y $yh"
-    //%img1.shadow=variables_get
+    //%block="stamp $img0=screen_image_picker to $img1=screen_image_picker and cutting color with $colorCut at x $xw y $yh"
     //%colorCut.shadow="lists_create_with" colorCut.defl=colorindexpicker
     //%group="image manager"
     //%inlineInputMode=inline
     //%weight=7
-    export function StampCut(img0:Image,img1:Image,colorCut:number[],xw:number,yh:number) {
+    export function StampCutter(img0:Image,img1:Image,colorCut:number[],xw:number,yh:number) {
         if (!img0 || !img1) return;
         for (let x = 0;x < img0.width;x++) {
             for (let y = 0;y < img0.height;y++) {
