@@ -1,4 +1,14 @@
 
+interface pos {
+    x:number
+    y:number
+}
+
+interface ftimg {
+    fimg:Image
+    timg:Image
+}
+
 namespace images {
 
     export enum imgsizes { width, height}
@@ -16,13 +26,9 @@ namespace images {
         return Math.min(percentage, maxPercentage);
     }
 
-    export function stampImage(src: Image, to: Image, x: number, y: number) {
+    export function stampImg(src: Image, to: Image, x: number, y: number) {
         if (!src || !to) { return; }
         to.drawTransparentImage(src, x, y);
-    }
-
-    export function createRenderable(index: number, handler: (screen: Image) => void) {
-        scene.createRenderable(index, handler);
     }
 
     let mt4: Image[] = [img`
@@ -103,6 +109,52 @@ namespace images {
             f f f f
             f f f f
         `]
+
+    //%blockid=img_posshadow
+    //%block="x: $x y: $y"
+    //%group="main shadow"
+    //%inlineInputMode=inline
+    //%weight=10
+    export function _posnum(x:number,y:number) {
+        let upoint:pos;
+        upoint.x = x
+        upoint.y = y
+        return upoint
+    }
+
+    //%blockid=img_ftimgshadow
+    //%block="stamp $f=screen_image_picker to $t=screen_image_picker"
+    //%group="main shadow"
+    //%inlineInputMode=inline
+    //%weight=5
+    export function _ftimg(f: Image, t: Image) {
+        let uftimg: ftimg;
+        uftimg.fimg = f
+        uftimg.timg = t
+        return uftimg
+    }
+
+    //%blockid=img_stampimage
+    //%block="$duoimg=img_ftimgshadow at $point=img_posshadow"
+    //%group="image oparetor"
+    //%inlineInputMode=inline
+    //%weight=20
+    export function stampImage(duoimg:ftimg, point:pos) {
+        if (!duoimg.fimg || !duoimg.timg) { return; }
+        duoimg.timg.drawTransparentImage(duoimg.fimg, point.x, point.y);
+    }
+
+    //%blockid=img_squareimage
+    //%block="$uimg=screen_image_picker as square"
+    //%group="image oparetor"
+    //%inlineInputMode=inline
+    //%weight=18
+    export function squareImage(uimg:Image) {
+        let imax = Math.max(uimg.width,uimg.height)
+        let uuimg = image.create(imax,imax)
+        stampImg(uimg, uuimg, Math.floor((imax / 2) - (uimg.width / 2)), Math.floor((imax / 2) - (uimg.height / 2)))
+        uimg = uuimg.clone()
+    }
 
     /**
      * calculated size
@@ -256,37 +308,27 @@ namespace images {
     }
 
     //%blockid=img_drawandcrop
-    //%block="stamp $img0=screen_image_picker to $img1 in color cut $colorCut at x $xw y $yh"
+    //%block="stamp $img0=screen_image_picker to $img1 and cutting color with $colorCut at x $xw y $yh"
     //%img1.shadow=variables_get img1.defl=picture
     //%colorCut.shadow="lists_create_with" colorCut.defl=colorindexpicker
     //%group="better image"
     //%inlineInputMode=inline
     //%weight=50
     export function StampCut(img0:Image,img1:Image,colorCut:number[],xw:number,yh:number) {
-        let stammed:number[][] = []
-        let todopos:number[][] = []
-        let cenpos:number[] = [Math.floor(img0.width / 2),Math.floor(img0.height / 2)]
-        let dirpin:number[][] = [[1,0,-1,0],[0,1,0,-1]]
-        let nextpos:number[] = [cenpos[0],cenpos[1]]
-        let curpos:number[] = [nextpos[0],nextpos[1]]
-        if (colorCut.indexOf(img1.getPixel(xw + cenpos[0],yh + cenpos[1])) >= 0) { return img1 }
-        img1.setPixel(xw + nextpos[0],yh + nextpos[1],img0.getPixel(nextpos[0],nextpos[1]))
-        todopos.push([nextpos[0],nextpos[1]])
-        stammed.push([nextpos[0],nextpos[1]])
-        while (todopos.length > 0) {
-            curpos = [todopos[0][0],todopos[0][1]]
-            todopos.removeAt(0)
-            for (let diri = 0;diri < dirpin.length; diri++) {
-                nextpos = [curpos[0] + dirpin[0][diri],curpos[1] + dirpin[1][diri]]
-                if (colorCut.indexOf(img1.getPixel(xw + nextpos[0],yh + nextpos[1])) < 0 && stammed.indexOf([nextpos[0],nextpos[1]]) < 0) {
-                    img1.setPixel(xw + nextpos[0],yh + nextpos[1],img0.getPixel(nextpos[0],nextpos[1]))
-                    todopos.push([nextpos[0],nextpos[1]])
-                    stammed.push([nextpos[0],nextpos[1]])
+        if (!img0 || !img1) return;
+        for (let x = 0;x < img0.width;x++) {
+            for (let y = 0;y < img0.height;y++) {
+                const tcolor = img0.getPixel(x,y)
+                const fcolor = img1.getPixel(xw+x,yh+y)
+                if (tcolor > 0) {
+                    if (colorCut.indexOf(fcolor) >= 0) {
+                        img1.setPixel(xw+x,yh+y,fcolor)
+                    }
                 }
             }
         }
-        return img1.clone()
     }
+
     /**
      * fill matrix shader
      * render from color
@@ -318,31 +360,6 @@ namespace images {
             }
         }
         return Iimg
-    }
-    
-    /**
-     * advance image color replace
-     * and get return image in another colors
-     * from color input list
-     */
-    //%blockid=img_matrixrender
-    //%block="render matrix shader? $Render in z-index $Uidx from $lCol"
-    //%lCol.shadow="lists_create_with" lCol.defl="colorindexpicker"
-    //%group="better image"
-    //%inlineInputMode=inline
-    //%weight=30
-    //%blockHidden=true
-    export function MatrixScreen(Render: boolean = false ,Uidx:number = 0, lCol: number[] = []) {
-        let Iimg = image.create(scene.screenWidth(), scene.screenHeight())
-        let Sidx = 999999999
-        if (Uidx > 0) {Sidx = Uidx }
-        createRenderable(Sidx, function(srcimg) {
-            if (Render) {
-            Iimg.fill(scene.backgroundColor())
-            stampImage(Iimg,image.screenImage(),0,0)
-            stampImage(MatrixShade(Iimg,lCol),srcimg,0,0)
-            }
-        })
     }
 
     /**
@@ -401,3 +418,4 @@ namespace images {
     }
     
 }
+
