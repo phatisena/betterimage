@@ -97,8 +97,8 @@ namespace images {
     //%inlineInputMode=inline
     //%weight=9
     export function squareImage(uimg:Image) {
-        let imax = Math.max(uimg.width,uimg.height), uuimg = image.create(imax,imax)
-        stampImage(uimg, uuimg, Math.floor((imax / 2) - (uimg.width / 2)), Math.floor((imax / 2) - (uimg.height / 2)))
+        const imax = Math.max(uimg.width,uimg.height), uuimg = image.create(imax,imax)
+        stampImage(uimg.clone(), uuimg, Math.floor((imax / 2) - (uimg.width / 2)), Math.floor((imax / 2) - (uimg.height / 2)))
         uimg = uuimg.clone()
     }
 
