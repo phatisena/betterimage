@@ -100,6 +100,7 @@ namespace images {
         const imax = Math.max(uimg.width,uimg.height), uuimg = image.create(imax,imax)
         stampImage(uimg.clone(), uuimg, Math.floor((imax / 2) - (uimg.width / 2)), Math.floor((imax / 2) - (uimg.height / 2)))
         uimg = uuimg.clone()
+        return uuimg
     }
 
     /**
