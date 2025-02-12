@@ -81,14 +81,60 @@ namespace images {
             f f f f
         `]
 
+    let DirT: number[][] = [
+        [-1,-1],[0,-1],[1,-1],
+        [-1,0],[0,0],[1,0],
+        [-1,1],[0,1],[1,1]
+    ]
+
+    export enum DirIdx {
+        //%block="left up"
+        LU = 0,
+        //%block="center up"
+        CU = 1,
+        //%block="right up"
+        RU = 2,
+        //%block="left center"
+        LC = 3,
+        //%block="center"
+        CC = 4,
+        //%block="right center"
+        RC = 5,
+        //%block="left down"
+        LD = 6,
+        //%block="center down"
+        CD = 7,
+        //%block="right down"
+        RD = 8,
+    }
+
     //%blockid=img_stampimage
-    //%block="stamp $src=screen_image_picker to $to=screen_image_picker at X: $x Y: $y"
+    //%block="stamp $src=screen_image_picker to $to=screen_image_picker with dir $D at X: $x Y: $y"
+    //%D.fieldEditor="gridpicker"
+    //%D.fieldOptions.width=220
+    //%D.fieldOptions.columns=3
     //%group="image oparetor"
     //%inlineInputMode=inline
     //%weight=10
-    export function stampImage(src: Image, to: Image, x: number, y: number) {
+    export function stampImage(src: Image, to: Image, D:DirIdx=4, x: number, y: number) {
         if (!src || !to) { return; }
-        to.drawTransparentImage(src, x, y);
+        let dirl = DirT[D]
+        let xi, yi = 0
+        if (dirl[0] < 0) {
+            xi = x
+        } else if (dirl[0] == 0) {
+            xi = (x - Math.floor(src.width / 2))
+        } else if (dirl[0] > 0) {
+            xi = (x - src.width)
+        }
+        if (dirl[1] < 0) {
+            yi = x
+        } else if (dirl[1] == 0) {
+            yi = (x - Math.floor(src.width / 2))
+        } else if (dirl[1] > 0) {
+            yi = (x - src.width)
+        }
+        to.drawTransparentImage(src, xi, yi);
     }
 
     //%blockid=img_squareimage
@@ -98,7 +144,7 @@ namespace images {
     //%weight=9
     export function squareImage(uimg:Image) {
         const imax = Math.max(uimg.width,uimg.height), uuimg = image.create(imax,imax)
-        stampImage(uimg.clone(), uuimg, Math.floor((imax / 2) - (uimg.width / 2)), Math.floor((imax / 2) - (uimg.height / 2)))
+        stampImage(uimg.clone(), uuimg,0, Math.floor((imax / 2) - (uimg.width / 2)), Math.floor((imax / 2) - (uimg.height / 2)))
         uimg = uuimg.clone()
         return uuimg
     }
@@ -243,17 +289,18 @@ namespace images {
     //%weight=7
     export function StampCutter(img0:Image,img1:Image,colorCut:number[],xw:number,yh:number) {
         if (!img0 || !img1) return undefined
+        let img2 = image.create(img0.width,img0.height)
         for (let x = 0;x < img0.width;x++) {
             for (let y = 0;y < img0.height;y++) {
                 const tcolor = img0.getPixel(x,y), fcolor = img1.getPixel(xw+x,yh+y)
                 if (tcolor > 0) {
                     if (colorCut.indexOf(fcolor) >= 0) {
-                        img1.setPixel(xw+x,yh+y,fcolor)
+                        img2.setPixel(xw+x,yh+y,tcolor)
                     }
                 }
             }
         }
-        return img1
+        return img2
     }
 
     /**
