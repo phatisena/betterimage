@@ -128,11 +128,11 @@ namespace images {
             xi = (x - src.width)
         }
         if (dirl[1] < 0) {
-            yi = x
+            yi = (x - src.width)
         } else if (dirl[1] == 0) {
             yi = (x - Math.floor(src.width / 2))
         } else if (dirl[1] > 0) {
-            yi = (x - src.width)
+            yi = x
         }
         to.drawTransparentImage(src, xi, yi);
     }
