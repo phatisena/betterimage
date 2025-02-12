@@ -121,11 +121,11 @@ namespace images {
         let dirl = DirT[D]
         let xi, yi = 0
         if (dirl[0] < 0) {
-            xi = x
+            xi = (x - src.width)
         } else if (dirl[0] == 0) {
             xi = (x - Math.floor(src.width / 2))
         } else if (dirl[0] > 0) {
-            xi = (x - src.width)
+            xi = x
         }
         if (dirl[1] < 0) {
             yi = (x - src.width)
