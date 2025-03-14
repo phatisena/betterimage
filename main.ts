@@ -144,7 +144,7 @@ namespace images {
     //%weight=9
     export function squareImage(uimg:Image) {
         const imax = Math.max(uimg.width,uimg.height), uuimg = image.create(imax,imax)
-        stampImage(uimg.clone(), uuimg,0, Math.floor((imax / 2) - (uimg.width / 2)), Math.floor((imax / 2) - (uimg.height / 2)))
+        stampImage(uimg.clone(), uuimg,9, Math.floor((imax / 2) - (uimg.width / 2)), Math.floor((imax / 2) - (uimg.height / 2)))
         uimg = uuimg.clone()
         return uuimg
     }
@@ -295,7 +295,7 @@ namespace images {
                 const tcolor = img0.getPixel(x,y), fcolor = img1.getPixel(xw+x,yh+y)
                 if (tcolor > 0) {
                     if (colorCut.indexOf(fcolor) >= 0) {
-                        img2.setPixel(xw+x,yh+y,tcolor)
+                        img2.setPixel(x,y,tcolor)
                     }
                 }
             }
